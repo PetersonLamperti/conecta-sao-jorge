@@ -1,0 +1,187 @@
+<title>Conecta São Jorge</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: uma coluna estreita, cartões de módulo empilhados; telas leves para celulares simples e internet lenta */
+:root{
+  --bg:#f6f7f4; --surface:#ffffff; --ink:#18242b; --muted:#56646b;
+  --line:#d9dfdc; --accent:#1f6f5c; --accent-ink:#ffffff; --sun:#e8b22c;
+  --ok:#2c7a3f; --bad:#b3362c; --soft:#e7f1ed;
+  --font:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans",Arial,sans-serif;
+  --base:17px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#121a1d; --surface:#1a2428; --ink:#e9efec; --muted:#a3b1ab;
+  --line:#2c3a3f; --accent:#5cc2a6; --accent-ink:#0d1a16; --sun:#f0c44f;
+  --ok:#6fcf86; --bad:#ff8a7d; --soft:#1e3330; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121a1d; --surface:#1a2428; --ink:#e9efec; --muted:#a3b1ab;
+  --line:#2c3a3f; --accent:#5cc2a6; --accent-ink:#0d1a16; --sun:#f0c44f;
+  --ok:#6fcf86; --bad:#ff8a7d; --soft:#1e3330; color-scheme:dark}
+html.alto{--base:21px}
+html.contraste{--bg:#000;--surface:#000;--ink:#fff;--muted:#fff;--line:#fff;--accent:#ffe14d;--accent-ink:#000;--soft:#222;--ok:#7dff8f;--bad:#ff8080}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:var(--base);line-height:1.55}
+.wrap{max-width:720px;margin:0 auto;padding-block:20px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header{display:flex;flex-direction:column;gap:6px;padding-bottom:16px;border-bottom:3px solid var(--sun)}
+.marca{font-size:.8em;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+h1{font-size:1.8em;line-height:1.15;margin:0;text-wrap:balance}
+h2{font-size:1.3em;margin:0;text-wrap:balance}
+h3{font-size:1.05em;margin:0}
+p{margin:0}
+.barra{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+button{font:inherit;font-size:.9em;cursor:pointer;border-radius:10px;border:2px solid var(--line);background:var(--surface);color:var(--ink);padding:10px 14px;min-height:44px}
+button:focus-visible,a:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+button.principal{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+button[aria-pressed="true"]{border-color:var(--accent);background:var(--soft)}
+main{display:flex;flex-direction:column;gap:20px;margin-top:20px}
+.progresso{display:flex;flex-direction:column;gap:8px}
+.trilho{height:12px;border-radius:6px;background:var(--line);overflow:hidden}
+.trilho span{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.lista{display:flex;flex-direction:column;gap:12px;list-style:none;padding:0;margin:0}
+.modulo{display:flex;gap:14px;align-items:center;width:100%;text-align:left;padding:16px;border-radius:14px}
+.num{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-weight:700;background:var(--soft);color:var(--accent)}
+.modulo.feito .num{background:var(--accent);color:var(--accent-ink)}
+.modulo .txt{display:flex;flex-direction:column;gap:2px;min-width:0}
+.modulo small{color:var(--muted);font-size:.85em}
+.licao{display:flex;flex-direction:column;gap:14px;background:var(--surface);border:2px solid var(--line);border-radius:14px;padding:18px}
+.licao ul{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:6px}
+.dica{background:var(--soft);border-left:5px solid var(--sun);padding:12px 14px;border-radius:8px}
+.passos{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.contador{color:var(--muted);font-size:.85em;font-variant-numeric:tabular-nums}
+fieldset{border:0;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}
+legend{font-weight:600;margin-bottom:8px}
+.opc{text-align:left;width:100%}
+.opc.certa{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 15%,var(--surface))}
+.opc.errada{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 12%,var(--surface))}
+.retorno{font-weight:600}
+.retorno.ok{color:var(--ok)} .retorno.no{color:var(--bad)}
+footer{margin-top:28px;color:var(--muted);font-size:.85em;border-top:1px solid var(--line);padding-top:14px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="marca">Inclusão digital · Bairro São Jorge · Herval d'Oeste/SC</span>
+    <h1>Conecta São Jorge</h1>
+    <p>Aulas curtas para usar o celular e a internet com mais segurança e autonomia.</p>
+    <div class="barra" role="group" aria-label="Acessibilidade">
+      <button id="btn-letra" aria-pressed="false">A+ Letra maior</button>
+      <button id="btn-contraste" aria-pressed="false">Alto contraste</button>
+      <button id="btn-ouvir">🔊 Ouvir texto</button>
+    </div>
+  </header>
+  <main id="app"></main>
+  <footer>
+    Projeto extensionista · Engenharia de Software · UNINTER. Página leve, feita em HTML, CSS e JavaScript, funciona em celulares simples. Seu progresso fica salvo só neste aparelho.
+  </footer>
+</div>
+
+<script>
+const MODULOS=[
+{t:"Primeiros passos no celular",d:"Ligar, tocar, deslizar e conectar no Wi-Fi",
+ licoes:[
+  {h:"Os gestos básicos",p:"O celular com tela de toque responde aos seus dedos.",l:["Tocar uma vez: abre um aplicativo ou botão.","Deslizar: passa de uma tela para outra.","Pinçar com dois dedos: aumenta ou diminui o texto e as fotos."],dica:"Se algo abriu sem querer, use o botão de voltar (geralmente uma seta ou um triângulo na parte de baixo)."},
+  {h:"Conectar no Wi-Fi",p:"Usar o Wi-Fi economiza o seu pacote de dados.",l:["Abra Configurações (ícone de engrenagem).","Toque em Wi-Fi e ligue a chave.","Escolha a rede e digite a senha com calma."],dica:"Na escola ou no centro comunitário, peça a senha da rede ao responsável."},
+  {h:"Deixar a letra maior",p:"Ler com conforto faz diferença.",l:["Abra Configurações.","Procure por Tela ou Acessibilidade.","Ajuste o Tamanho da fonte."],dica:"Nesta página, use o botão A+ lá em cima."}],
+ quiz:[
+  {q:"Para que serve conectar no Wi-Fi?",o:["Para gastar mais crédito","Para economizar o pacote de dados","Para desligar o celular"],c:1},
+  {q:"Como aumentar uma foto na tela?",o:["Pinçando com dois dedos","Apertando o botão de desligar","Sacudindo o celular"],c:0},
+  {q:"Onde fica o ajuste do tamanho da letra?",o:["No aplicativo de câmera","Em Configurações, em Tela ou Acessibilidade","Na calculadora"],c:1}]},
+{t:"Internet com segurança",d:"Senhas fortes e como reconhecer golpes",
+ licoes:[
+  {h:"Senha forte",p:"Uma boa senha protege suas contas.",l:["Use frases longas, com pelo menos 12 caracteres.","Não use data de nascimento nem nome de parentes.","Não repita a mesma senha em todos os lugares."],dica:"Exemplo de ideia: juntar palavras que só você entende, como \"cafe-azul-no-portao\"."},
+  {h:"Golpes por mensagem",p:"Golpistas se passam por bancos, lojas e até parentes.",l:["Desconfie de pressa: \"pague agora\", \"último aviso\".","Não clique em links de mensagens inesperadas.","Parente pedindo dinheiro de número novo? Ligue para o número antigo antes."],dica:"Banco nenhum pede senha ou código por mensagem."},
+  {h:"Código de verificação",p:"É um número que chega por SMS para confirmar que é você.",l:["Nunca passe esse código para ninguém.","Quem pede o código quer roubar sua conta."],dica:"Ative a verificação em duas etapas no WhatsApp: Configurações > Conta."}],
+ quiz:[
+  {q:"Qual destas é a senha mais segura?",o:["123456","joao1990","cafe-azul-no-portao"],c:2},
+  {q:"Chegou mensagem do \"banco\" pedindo sua senha. O que fazer?",o:["Responder rápido","Ignorar e ligar no número oficial do banco","Mandar a senha pela metade"],c:1},
+  {q:"Alguém pediu o código que chegou por SMS. Você deve:",o:["Passar o código","Não passar para ninguém","Postar no grupo da família"],c:1}]},
+{t:"Serviços digitais do dia a dia",d:"gov.br, Pix e como achar informação confiável",
+ licoes:[
+  {h:"Conta gov.br",p:"Com ela você acessa carteira de trabalho, INSS, CadÚnico e outros serviços.",l:["Instale o aplicativo oficial gov.br pela loja do celular.","Cadastre com seu CPF.","Guarde a senha em lugar seguro."],dica:"O cadastro é gratuito. Desconfie de quem cobra para fazer."},
+  {h:"Pix com segurança",p:"O Pix é rápido, então é preciso atenção antes de confirmar.",l:["Confira o nome de quem vai receber antes de pagar.","Ajuste um limite de Pix menor à noite no app do banco.","Comprovante falso existe: confira se o dinheiro caiu."],dica:"Pix enviado por engano: procure o seu banco o quanto antes."},
+  {h:"Informação confiável",p:"Nem tudo que circula na internet é verdade.",l:["Veja quem publicou e a data.","Procure a mesma notícia em outros sites conhecidos.","Na dúvida, não compartilhe."],dica:"Sites do governo terminam com .gov.br."}],
+ quiz:[
+  {q:"Antes de confirmar um Pix, você deve:",o:["Conferir o nome de quem recebe","Fechar os olhos e confirmar","Enviar duas vezes"],c:0},
+  {q:"O cadastro no gov.br:",o:["É pago","É gratuito","Só funciona no computador"],c:1},
+  {q:"Recebeu uma notícia chocante. Primeiro passo:",o:["Compartilhar em todos os grupos","Ver quem publicou e checar em outras fontes","Apagar o celular"],c:1}]}
+];
+
+const app=document.getElementById('app');
+let estado={feitos:{},letra:false,contraste:false};
+try{const s=JSON.parse(localStorage.getItem('conecta')||'null');if(s)estado=Object.assign(estado,s)}catch(e){}
+function salvar(){try{localStorage.setItem('conecta',JSON.stringify(estado))}catch(e){}}
+function aplicarAcess(){
+  document.documentElement.classList.toggle('alto',estado.letra);
+  document.documentElement.classList.toggle('contraste',estado.contraste);
+  document.getElementById('btn-letra').setAttribute('aria-pressed',estado.letra);
+  document.getElementById('btn-contraste').setAttribute('aria-pressed',estado.contraste);
+}
+document.getElementById('btn-letra').onclick=()=>{estado.letra=!estado.letra;aplicarAcess();salvar()};
+document.getElementById('btn-contraste').onclick=()=>{estado.contraste=!estado.contraste;aplicarAcess();salvar()};
+document.getElementById('btn-ouvir').onclick=()=>{
+  if(!('speechSynthesis' in window))return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(app.innerText);u.lang='pt-BR';u.rate=.95;speechSynthesis.speak(u);
+};
+function esc(s){return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+
+function inicio(){
+  const n=Object.keys(estado.feitos).length;
+  app.innerHTML=`<section class="progresso" aria-label="Seu progresso">
+    <h2>Seu progresso</h2>
+    <div class="trilho"><span style="width:${n/MODULOS.length*100}%"></span></div>
+    <p class="contador">${n} de ${MODULOS.length} módulos concluídos</p></section>
+    <ol class="lista">${MODULOS.map((m,i)=>`<li><button class="modulo ${estado.feitos[i]?'feito':''}" data-i="${i}">
+      <span class="num">${estado.feitos[i]?'✓':i+1}</span>
+      <span class="txt"><h3>${esc(m.t)}</h3><small>${esc(m.d)}${estado.feitos[i]?' · acertos no quiz: '+estado.feitos[i]+'/'+m.quiz.length:''}</small></span>
+    </button></li>`).join('')}</ol>`;
+  app.querySelectorAll('.modulo').forEach(b=>b.onclick=()=>licao(+b.dataset.i,0));
+  window.scrollTo(0,0);
+}
+function licao(mi,li){
+  const m=MODULOS[mi],L=m.licoes[li],ult=li===m.licoes.length-1;
+  app.innerHTML=`<article class="licao">
+    <span class="contador">${esc(m.t)} · aula ${li+1} de ${m.licoes.length}</span>
+    <h2>${esc(L.h)}</h2><p>${esc(L.p)}</p>
+    <ul>${L.l.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>
+    <p class="dica"><strong>Dica:</strong> ${esc(L.dica)}</p>
+    <div class="passos">
+      <button id="voltar">${li===0?'← Início':'← Anterior'}</button>
+      <button id="seguir" class="principal">${ult?'Fazer o quiz →':'Próxima →'}</button>
+    </div></article>`;
+  document.getElementById('voltar').onclick=()=>li===0?inicio():licao(mi,li-1);
+  document.getElementById('seguir').onclick=()=>ult?quiz(mi,0,0):licao(mi,li+1);
+  window.scrollTo(0,0);
+}
+function quiz(mi,qi,acertos){
+  const m=MODULOS[mi],Q=m.quiz[qi];
+  app.innerHTML=`<article class="licao">
+    <span class="contador">Quiz · pergunta ${qi+1} de ${m.quiz.length}</span>
+    <fieldset><legend>${esc(Q.q)}</legend>
+    ${Q.o.map((o,k)=>`<button class="opc" id="op${k}" data-k="${k}">${esc(o)}</button>`).join('')}</fieldset>
+    <p class="retorno" id="ret" aria-live="polite"></p>
+    <div class="passos"><button id="sair">← Início</button><button id="prox" class="principal" hidden>Continuar →</button></div></article>`;
+  let respondeu=false;
+  app.querySelectorAll('.opc').forEach(b=>b.onclick=()=>{
+    if(respondeu)return;respondeu=true;
+    const k=+b.dataset.k,ok=k===Q.c;if(ok)acertos++;
+    b.classList.add(ok?'certa':'errada');
+    document.getElementById('op'+Q.c).classList.add('certa');
+    const r=document.getElementById('ret');r.className='retorno '+(ok?'ok':'no');
+    r.textContent=ok?'Isso mesmo!':'Quase. A resposta certa está em verde.';
+    document.getElementById('prox').hidden=false;
+  });
+  document.getElementById('sair').onclick=inicio;
+  document.getElementById('prox').onclick=()=>{
+    if(qi<m.quiz.length-1)return quiz(mi,qi+1,acertos);
+    estado.feitos[mi]=acertos;salvar();
+    app.innerHTML=`<article class="licao"><h2>Módulo concluído</h2>
+      <p>Você acertou <strong>${acertos} de ${m.quiz.length}</strong> perguntas em “${esc(m.t)}”.</p>
+      <div class="passos"><button id="refazer">Refazer aulas</button><button id="ini" class="principal">Voltar ao início</button></div></article>`;
+    document.getElementById('refazer').onclick=()=>licao(mi,0);
+    document.getElementById('ini').onclick=inicio;
+  };
+  window.scrollTo(0,0);
+}
+aplicarAcess();inicio();
+</script>
